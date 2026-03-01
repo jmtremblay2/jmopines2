@@ -2,20 +2,22 @@
 title: "How Dates Work on This Site"
 date: 2026-04-03
 draft: false
-tags: ['hugo', 'git', 'workflow']
+tags: ['hugo', 'git', 'workflow', 'AI-gen']
 ---
 
-Every page on this site has two dates: **Created** and **Last Modified**.
+Every page on this site has two dates: **Created** and **Updated**.
 Neither one is maintained by hand. Here's the full flow.
 
 ## Creating a new page
 
-New content is created via Hugo's CLI (running in Docker):
+New content is created with the `new.sh` script:
 
 ```bash
-docker run --rm -v "${SITE_DIR}:/src" -w /src \
-  ghcr.io/gohugoio/hugo:latest new content/thissite/my-page.md
+./scripts/new.sh content/thissite/my-page.md
 ```
+
+This sources `.env` for `HUGO_IMAGE` and `SITE_DIR`, then runs
+`hugo new` inside the Docker container.
 
 Hugo reads the archetype template at `archetypes/default.md`:
 
@@ -44,7 +46,7 @@ tags: []
 **That `date` value is baked into the file once and never changes.**
 It represents when the page was created. Nobody edits it afterward.
 
-## How "Last Modified" works
+## How "Updated" works
 
 The `lastmod` field is **not** stored in the file at all. It's resolved
 at build time by Hugo based on this config in `hugo.toml`:
@@ -72,7 +74,7 @@ then render it with `{{ .Lastmod }}`.
 ## What does git actually track?
 
 Git records the **author date** on each commit. When you edit a file and
-commit it, that commit's date becomes the new `lastmod` for that file.
+commit it, that commit's date becomes the new updated date for that file.
 The original `date` in front matter is untouched — it still reflects
 creation time.
 
@@ -84,7 +86,7 @@ Date:   Thu Apr 3 14:30:00 2026 -0400
     Fix typo in dates page
 ```
 
-Hugo will see `Apr 3 14:30:00 2026` as the `lastmod` for any file
+Hugo will see `Apr 3 14:30:00 2026` as the updated date for any file
 modified in that commit.
 
 ## The full lifecycle
@@ -101,8 +103,8 @@ modified in that commit.
 
 - **Created date**: set once by the archetype, stored in front matter,
   never changes.
-- **Last modified**: not stored in the file. Resolved from git at build
+- **Updated date**: not stored in the file. Resolved from git at build
   time. Zero maintenance.
 - **`enableGitInfo = true`** is required in `hugo.toml` for any of the
   git-based date resolution to work.
-- **No tracking needed** for `lastmod` — it's derived, not stored.
+- **No tracking needed** for the updated date — it's derived, not stored.

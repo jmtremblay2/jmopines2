@@ -14,6 +14,7 @@ enableGitInfo = true
 [params]
   contentTypeName = "posts"
   showMenuItems = 5
+  showLastUpdated = true
   fullWidthTheme = false
   centerTheme = true
 
