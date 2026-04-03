@@ -5,7 +5,7 @@ pagination.pagerSize = 5
 enableGitInfo = true
 
 [frontmatter]
-  date = [':filename', ':default']
+  date = [':default']
   lastmod = [':git', ':fileModTime']
 
 [markup.highlight]
