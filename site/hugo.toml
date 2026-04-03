@@ -62,6 +62,11 @@ enableGitInfo = true
           name = "Config"
           url = "/config"
           weight = 11
+        [[languages.en.menu.main]]
+          identifier = "thissite"
+          name = "This Site"
+          url = "/thissite"
+          weight = 12
 
 [module]
   [[module.imports]]
