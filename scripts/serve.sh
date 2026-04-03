@@ -4,11 +4,8 @@ set -euo pipefail
 # Serve the Hugo site locally using Docker.
 # Usage: ./scripts/serve.sh
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
-SITE_DIR="${PROJECT_ROOT}/site"
-HUGO_IMAGE="ghcr.io/gohugoio/hugo:latest"
-PORT="${1:-1313}"
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/../.env"
+PORT="${1:-$PORT}"
 
 if [[ ! -d "${SITE_DIR}" ]]; then
   echo "[serve] Site directory not found: ${SITE_DIR}"

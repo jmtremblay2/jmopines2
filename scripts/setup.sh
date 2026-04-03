@@ -4,10 +4,7 @@ set -euo pipefail
 # Initialize a Hugo site with the Terminal theme using Docker.
 # Usage: ./scripts/setup.sh
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
-SITE_DIR="${PROJECT_ROOT}/site"
-HUGO_IMAGE="ghcr.io/gohugoio/hugo:latest"
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/../.env"
 
 hugo() {
   docker run --rm \
