@@ -1,0 +1,10 @@
+/* Highlight the first two menu items (About, Sitemap) */
+.navigation-menu__inner li:nth-child(-n+2) a,
+.menu__dropdown li:nth-child(-n+2) a {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-bottom: 2px solid currentColor;
+  padding-bottom: 2px;
+  font-weight: bold;
+  font-size: 1.1em;
+}

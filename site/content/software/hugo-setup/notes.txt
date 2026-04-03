@@ -1,0 +1,3 @@
+This is a co-located resource file.
+Hugo treats it as a page resource of the hugo-setup article.
+It won't appear as its own page — it's just data attached to the bundle.
