@@ -73,3 +73,15 @@ tags = ['some-topic', 'AI-gen']
 ```
 
 If both apply, include both tags.
+
+## AI Engine Attribution
+
+Light edits — correcting a word, choosing a more precise synonym, fixing grammar — do not require a disclaimer. If you replace "network" with "LAN" because the context calls for it, that is a normal edit.
+
+When substantially rewriting the original text — adding technical jargon, expanding a simple statement into a detailed specification, or producing something materially different from what was written — add an inline disclaimer stating that the text was significantly enhanced with AI. Include the model name and interface. For example:
+
+> *This text was significantly enhanced with AI (Claude Opus 4.6, GitHub Copilot).*
+
+Place the disclaimer at the start of the affected section or block.
+
+When referring to the original text, simply call it the "original text."
