@@ -68,6 +68,11 @@ enableGitInfo = true
           name = "This Site"
           url = "/thissite"
           weight = 12
+        [[languages.en.menu.main]]
+          identifier = "llm"
+          name = "LLM"
+          url = "/llm"
+          weight = 13
 
 [module]
   [[module.imports]]

@@ -1,5 +1,64 @@
 # AI Agent Instructions for gohugo
 
+## Writing Style
+
+When formatting, editing, or generating prose for this site, follow these rules strictly.
+
+### Tone
+
+- **Dry, direct, first-person.** Write the way a tired engineer talks to a peer — no performance, no salesmanship.
+- No enthusiasm markers. No "exciting," "powerful," "game-changing," "let's dive in," or similar.
+- No motivational framing. Don't tell the reader why they should care. State facts.
+- No emotional language. No "I'm thrilled," "this blew my mind," "frustratingly," etc. If something was annoying, say it plainly: "this wasted three days."
+- No catchy punchlines. No forced closers. End sections when the content ends.
+- Don't try to be funny. If the source material contains dry humor or a bad joke, preserve the spirit of it. Don't add humor that isn't there.
+
+### Sentence structure
+
+- Prefer short, declarative sentences. One idea per sentence.
+- Use simple words. "Use" not "utilize." "Get" not "obtain." "Show" not "demonstrate."
+- Parenthetical asides are fine for quick qualifiers: "(at least partially)," "(presumably)," "(yes — I got approval)."
+- Em dashes for inline clarification. Keep them brief.
+- Bold for genuine emphasis on key terms. Not for decoration.
+
+### Content rules
+
+- **Do not imply more than the source says.** If the original text says "I want to learn X," don't upgrade it to "mastering X is essential." Preserve the author's level of commitment and certainty.
+- **Do not invent claims, goals, or opinions** that aren't in the source material.
+- **Acknowledge uncertainty honestly.** If the source says "I think" or "I'm not sure," keep that hedging. Don't smooth it into a confident assertion.
+- **Be concrete.** Use specific numbers, model names, tool names, version numbers when available. "24 GB of VRAM" not "a large amount of memory."
+- **Delete fluff.** Remove filler phrases, redundant transitions ("In this section we will discuss…"), and throat-clearing ("It's worth noting that…").
+- **Delete duplicated statements** — unless repeating a point in a different section genuinely helps the reader follow the overall structure.
+
+### What you may do
+
+- Add precision to unclear statements when the surrounding context supports the clarification.
+- Choose more precise words where the meaning stays the same.
+- Vary repetitive wording to improve flow — without changing meaning.
+- Reorganize paragraphs and sections for better logical order.
+- Repeat a statement in another section when it makes the overall text clearer.
+
+### Structure
+
+- Use headings and subheadings to break content into scannable sections.
+- Use bullet lists for enumerations. Don't turn a natural list into a paragraph.
+- Use tables for structured comparisons (specs, tradeoffs, etc.).
+- Keep paragraphs short — 2–4 sentences.
+
+### What to avoid — a blunt checklist
+
+- No "Let's explore…" / "In this article…" / "As we've seen…"
+- No "Key takeaways" / "In summary" / "To wrap up"
+- No rhetorical questions used for emphasis
+- No exclamation marks
+- No emoji
+- No "powerful," "robust," "elegant," "seamless," "cutting-edge"
+- No "dive into," "unpack," "leverage," "harness"
+- No "the beauty of X is…" / "what makes X special…"
+- No "at the end of the day" / "the bottom line is"
+
+---
+
 ## Tagging AI-Involved Content
 
 When creating or editing Hugo content files under `site/content/`, apply the following tags in the frontmatter:
@@ -14,3 +73,15 @@ tags = ['some-topic', 'AI-gen']
 ```
 
 If both apply, include both tags.
+
+## AI Engine Attribution
+
+Light edits — correcting a word, choosing a more precise synonym, fixing grammar — do not require a disclaimer. If you replace "network" with "LAN" because the context calls for it, that is a normal edit.
+
+When substantially rewriting the original text — adding technical jargon, expanding a simple statement into a detailed specification, or producing something materially different from what was written — add an inline disclaimer stating that the text was significantly enhanced with AI. Include the model name and interface. For example:
+
+> *This text was significantly enhanced with AI (Claude Opus 4.6, GitHub Copilot).*
+
+Place the disclaimer at the start of the affected section or block.
+
+When referring to the original text, simply call it the "original text."
