@@ -52,8 +52,11 @@ For each step, review the plan carefully. Modify the current step based on findi
 
 ## Links
 
-I haven't found many guides on "how to get good, long-term, at using AI in software projects" — small or large.
+Practical, opinionated guides on AI-assisted software development workflows. Not prompt-engineering tutorials — these are about how to organize your work. I found the first link myself; the rest were surfaced by a GitHub Copilot agent session (Claude Opus 4.6).
 
-- [Simon Willison — Agentic Engineering Patterns](https://simonwillison.net/guides/agentic-engineering-patterns/) — closest to what I'm trying to build here.
-
-TODO: I was probably just not wording my searches well. Maintain this list.
+- [Simon Willison — Agentic Engineering Patterns](https://simonwillison.net/guides/agentic-engineering-patterns/) — comprehensive guide covering principles, testing (red/green TDD with agents), subagents, git workflows, and anti-patterns. The most structured resource on this list.
+- [Anthropic — Claude Code Best Practices](https://code.claude.com/docs/en/best-practices) — official guide from Anthropic. Key ideas: give the AI verification criteria (tests, screenshots), explore first then plan then code, manage context aggressively (`/clear` between tasks), use subagents for investigation to keep main context clean. Also covers CLAUDE.md authoring, hooks, skills, and scaling to parallel sessions.
+- [Harper Reed — My LLM codegen workflow atm](https://harper.blog/2025/02/16/my-llm-codegen-workflow-atm/) — end-to-end workflow for both greenfield and brownfield. Greenfield: brainstorm spec → plan a plan with a reasoning model → execute step-by-step. Brownfield: use repomix to dump context, generate missing tests / code review / issues via LLM, then fix them one at a time. Practical and opinionated.
+- [David Crawshaw — How I program with LLMs](https://crawshaw.io/blog/programming-with-llms) — thoughtful practitioner perspective. Key insight: treat LLM tasks like exam questions — give a specific objective and all background material, ask for work that is easy to verify. Notes that extra code structure (smaller packages, more tests) is now much cheaper, shifting old tradeoffs. Builder of sketch.dev.
+- [Thorsten Ball — How I Use AI](https://registerspill.thorstenball.com/p/how-i-use-ai) — diary-style log of two days of actual AI usage (Zed inline assist, ChatGPT, Copilot). Valuable for seeing the mundane reality: translation, type conversions, TDD test scaffolding, debugging Unix process groups. Shows when AI helps and when it doesn't.
+- [Steve Yegge — The death of the junior developer](https://sourcegraph.com/blog/the-death-of-the-junior-developer) — coins "Chat-Oriented Programming" (CHOP). Argues chat-first coding is the new default, with hand-writing as fallback. Key observation: chat is safer for senior devs than junior ones, because you need to detect when the AI gives specious but technically-correct advice.
