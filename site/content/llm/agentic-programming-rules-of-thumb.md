@@ -2,54 +2,58 @@
 date = '2026-04-06T13:15:06Z'
 draft = true
 title = 'Agentic Programming Rules of Thumb'
-tags = ['ai', 'llm', 'agentic', 'programming', 'workflow']
+tags = ['ai', 'llm', 'agentic', 'programming', 'workflow', 'AI-reviewed']
 +++
 
-# How to work with AI
-Like everybody else, I am trying to figure out how to use AI effectively in my software job and my computer hobbies. 
+## How to work with AI
 
+Like everybody else, I am trying to figure out how to use AI effectively in my software job and my computer hobbies.
 
-# My rules of thumb
-* Keep emotions out of it. Each irrelevant token in my prompt may reduce the quality of the output. Don't insult, greet, or praise the AI.
-* Use repository level instructions for the AI. Currently I call that `AGENTS.md`. I saw other suggestions. I don't think the industry has coalesced around a stardard `~/.agentsrc` -- that would be nice.
-* Think about the problem. A lot. The more you can partition the problem in well defined steps, the better the output. 
-    * If you don't know what the steps are, the first step totally can be to ask the AI to help you break down your vague problem.
-    * Err on the side of small steps
-* **Restart often**. This is probably a good rule of thumb anyways. Every. Bit. Of. Irrelevant. Context. will reduce the quality of your output. Once you're done with "write a pytest tests/test_some_feature.py::test_some_bug asserting X and Y and veriying such and such". Kill your session, start a new one for the next step.
-* word your prompt as precisely as possible. 
-    * the AI ... may understand what "add support in the function for dictionaries in addition to lists", but it will understand much better "in function foo(l: list), refactor the function for l to be either a list, or a dictionary. If the user supplies a list, maintain the current behavior. If the use supplies a dictionary: ignore the keys, extract the values into a list (or iterable) and treat tha collection the same way foo used to process the list when it was the only input allowed".
-    * you are less likely to run a sterile back and forth session with the AI.
-    * If your session got polluted with back and forth arguing with the AI, the AI seems to ignore your new instructions, you are likely to have better, more precise understanding of your problem. Use this failure as an opportunity to work your prompt better and start over.
-* Use files for output. Instruct the AI to write its output in `plan.MD`, or in `tests/test_some_bug.py`. It is much easier to track and review.
+## Rules of thumb
 
+- **Keep emotions out of it.** Every irrelevant token in a prompt may reduce output quality. Don't insult, greet, or praise the AI.
+- **Use repository-level instructions.** I currently use `AGENTS.md` for this. I've seen other naming suggestions. The industry hasn't settled on a standard like `~/.agentsrc` — that would be nice.
+- **Think about the problem. A lot.** The better you partition a problem into well-defined steps, the better the output.
+    - If you don't know the steps, the first step can be asking the AI to help break down your vague problem.
+    - Err on the side of small steps.
+- **Restart often.** Every bit of irrelevant context reduces output quality. Once you finish a task like "write a pytest `tests/test_some_feature.py::test_some_bug` asserting X and Y and verifying Z" — kill the session, start a new one for the next step.
+- **Word your prompt as precisely as possible.**
+    - The AI may understand "add support in the function for dictionaries in addition to lists." It will understand much better: "In function `foo(l: list)`, refactor `l` to accept either a list or a dictionary. If the user supplies a list, keep the current behavior. If the user supplies a dictionary: ignore the keys, extract the values into a list (or iterable), and process that collection the same way `foo` used to process the list."
+    - Precise prompts reduce the chance of a fruitless back-and-forth.
+    - If a session got polluted with arguing — the AI ignoring your new instructions — you likely now have a better understanding of the problem. Use that failure to write a sharper prompt and start over.
+- **Use files for output.** Instruct the AI to write to `plan.md` or `tests/test_some_bug.py`. Easier to track and review.
 
-# patterns
+## Patterns
 
-## Work on the problem, **then** work on the solution.
+### Work on the problem, then work on the solution
+
 **Step 1: define the problem.**
 
-in a loop.
-    1) write everything you know about your problem in a document (problem.md)
-        1.1) this is meant to be a rapid step. don't focus on grammar, style, etc. Focus on writing down everything relevant to the problem.
-    2) ask the AI to review the AI and notify you of anything that's either unclear, imprecise, or redundant.
-    3) ask the AI to tell to list you additional details it would like to know about your problem. Instruct the AI to ignore your document structure/grammar unless it renders it ambiguous.
+Loop:
 
-when the AI is starting to be pedantic or irrelevant, consider the grievances in your instructions. for example you might have to tell it "there are so absolute benchmark for query performance on this system, I will need to evaluate performance manually. We nonetheless state that evaluating performance is an objective of the problem"
+1. Write everything you know about the problem in a document (`problem.md`).
+    - This is meant to be rapid. Don't focus on grammar or style. Focus on writing down everything relevant.
+2. Ask the AI to review the document and flag anything unclear, imprecise, or redundant.
+3. Ask the AI to list additional details it needs about your problem. Instruct it to ignore document structure and grammar unless they cause ambiguity.
 
-**Step 2: ask the AI to edit your problem**
-the objective after this step is to have a plan that you understand, and that is written in a logical flow matching what you will try to accomplish. Provide instructions resembling:
+When the AI starts being pedantic or irrelevant, address it in your instructions. For example: "There are no absolute benchmarks for query performance on this system. I will evaluate performance manually. We still state that evaluating performance is an objective."
 
-> format document plan.md into an operational, chunked plan for my problem. Use simple steps. Focus on adding all the details relevant to each step and nothing else. Keep language dry.
+**Step 2: ask the AI to edit your problem document.**
 
-Best practices to instruct the AI on this task are TBD and may depend on your problem, AI engine used, etc.
+The objective: a plan you understand, written in a logical flow matching what you will try to accomplish. Prompt something like:
 
-**Step 3: solve each step independently**
-For each step, review the plan carefully. Modify the current step based on finding an the previous steps if required. Then instruct the AI to solve that step, in a new session, with only the context relevant to this step.
+> Format document `plan.md` into an operational, chunked plan for my problem. Use simple steps. Include all details relevant to each step and nothing else. Keep language dry.
 
+Best practices for this step are TBD and likely depend on the problem and the AI engine used.
 
-# Links
-I did not find many "guides" like the one that I am attempting to write on "how to get good, long term, using robots in softmare projects, small or large".
+**Step 3: solve each step independently.**
 
-Simon Willison built one that looks exactly like my vision: https://simonwillison.net/guides/agentic-engineering-patterns/
+For each step, review the plan carefully. Modify the current step based on findings from previous steps if needed. Then instruct the AI to solve that step in a new session, with only the context relevant to it.
 
-TODO: I was probably just not wording properly, let's maintain this list.
+## Links
+
+I haven't found many guides on "how to get good, long-term, at using AI in software projects" — small or large.
+
+- [Simon Willison — Agentic Engineering Patterns](https://simonwillison.net/guides/agentic-engineering-patterns/) — closest to what I'm trying to build here.
+
+TODO: I was probably just not wording my searches well. Maintain this list.
