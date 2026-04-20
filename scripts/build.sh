@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Build and serve the Hugo site locally using Docker.
+# Build the Hugo site into the `public/` directory for deployment (e.g. nginx).
 # Usage: ./scripts/build.sh
 
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/../.env"
-PORT="${1:-$PORT}"
 
 if [[ ! -d "${SITE_DIR}" ]]; then
   echo "[build] Site directory not found: ${SITE_DIR}"
@@ -13,14 +12,13 @@ if [[ ! -d "${SITE_DIR}" ]]; then
   exit 1
 fi
 
-echo "[build] Serving site at http://localhost:${PORT}/"
-echo "[build] Press Ctrl+C to stop."
+echo "[build] Building site into ${SITE_DIR}/public ..."
 
+# Run Hugo in Docker to produce static files. This does not start the dev server.
 docker run --rm \
   -v "${SITE_DIR}:/src" \
   -w /src \
-  -p "${PORT}:1313" \
-  "${HUGO_IMAGE}" server \
-    --bind 0.0.0.0 \
-    --baseURL "http://localhost:${PORT}/" \
-    --appendPort=false
+  "${HUGO_IMAGE}" \
+  --minify --destination "public" --baseURL "/"
+
+echo "[build] Build complete: ${SITE_DIR}/public"

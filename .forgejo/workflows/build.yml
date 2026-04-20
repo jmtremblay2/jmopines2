@@ -1,0 +1,24 @@
+name: Build Website
+on: [push]
+jobs:
+  build:
+    runs-on: docker
+    steps:
+      - name: Checkout
+        run: |
+          git clone --branch ${{ github.ref_name }} ${{ github.server_url }}/${{ github.repository }}.git .
+
+      - name: Build
+        run: |
+          docker run --rm \
+            -v "$PWD/site:/src" \
+            -w /src \
+            ghcr.io/gohugoio/hugo:latest \
+            --minify --destination "public" --baseURL "/"
+
+      - name: Deploy
+        run: |
+          echo "${{ secrets.FORGEJO_SSH }}" > /tmp/deploy_key
+          chmod 600 /tmp/deploy_key
+          scp -i /tmp/deploy_key -o StrictHostKeyChecking=no -r site/public/. ${{ vars.JMOPINES_USER }}@${{ vars.JMOPINES_IP }}:/var/www/jmopines/
+          rm /tmp/deploy_key
