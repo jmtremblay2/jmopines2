@@ -12,15 +12,14 @@ jobs:
         run: |
           mkdir -p site/public
           chmod 777 site
-
       - name: Build
         run: |
           docker run --rm \
+            -u "$(id -u):$(id -g)" \
             -v "$PWD/site:/src" \
             -w /src \
             ghcr.io/gohugoio/hugo:latest \
             --minify --destination "public" --baseURL "/"
-
       - name: Deploy
         run: |
           echo "${{ secrets.FORGEJO_SSH }}" > /tmp/deploy_key
