@@ -14,9 +14,12 @@ jobs:
           chmod 777 site
       - name: Build
         run: |
+          mkdir -p "$PWD/.hugo-cache"
           docker run --rm \
             -u "$(id -u):$(id -g)" \
             -v "$PWD/site:/src" \
+            -v "$PWD/.hugo-cache:/cache" \
+            -e GOPATH=/cache \
             -w /src \
             ghcr.io/gohugoio/hugo:latest \
             --minify --destination "public" --baseURL "/"
