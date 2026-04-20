@@ -8,6 +8,11 @@ jobs:
         run: |
           git clone --branch ${{ github.ref_name }} ${{ github.server_url }}/${{ github.repository }}.git .
 
+      - name: Prepare output directory
+        run: |
+          mkdir -p site/public
+          chmod 777 site/public
+
       - name: Build
         run: |
           docker run --rm \
