@@ -11,7 +11,7 @@ jobs:
       - name: Prepare output directory
         run: |
           mkdir -p site/public
-          chmod 777 site/public
+          chmod 777 site
 
       - name: Build
         run: |
