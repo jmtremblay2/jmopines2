@@ -27,5 +27,9 @@ jobs:
         run: |
           echo "${{ secrets.FORGEJO_SSH }}" > /tmp/deploy_key
           chmod 600 /tmp/deploy_key
-          scp -i /tmp/deploy_key -o StrictHostKeyChecking=no -r site/public/. ${{ vars.JMOPINES_USER }}@${{ vars.JMOPINES_IP }}:/var/www/jmopines/
+          rsync -az --delete \
+            --exclude 'resume/' \
+            -e "ssh -i /tmp/deploy_key -o StrictHostKeyChecking=no" \
+            site/public/. \
+            ${{ vars.JMOPINES_USER }}@${{ vars.JMOPINES_IP }}:/var/www/jmopines/
           rm /tmp/deploy_key
