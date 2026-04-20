@@ -54,6 +54,11 @@ enableGitInfo = true
           url = "/sitemap"
           weight = 2
         [[languages.en.menu.main]]
+          identifier = "resume"
+          name = "Resume"
+          url = "/resume/resume_jm_tremblay_latest.pdf"
+          weight = 3
+        [[languages.en.menu.main]]
           identifier = "software"
           name = "Software"
           url = "/software"
