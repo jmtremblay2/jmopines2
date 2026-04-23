@@ -40,22 +40,17 @@ jobs:
           mkdir -p "$PWD/.hugo-cache"
           chmod -R 777 "$PWD/.hugo-cache"
           
-          # We pass the Git config as an environment variable to bypass the 'dubious ownership'
           docker run --rm \
             -v "$PWD:/src" \
             -v "$PWD/.hugo-cache:/cache" \
             -e GOPATH=/cache \
             -e HUGO_CACHEDIR=/cache \
-            -e GIT_CONFIG_COUNT=1 \
-            -e GIT_CONFIG_KEY_0=safe.directory \
-            -e GIT_CONFIG_VALUE_0=/src \
             -w /src/site \
             forgejo.jmopines.com/jm/hugo-git:latest \
-            --minify --enableGitInfo --noTimes --destination "public" --baseURL "/"
+            sh -c "git config --global --add safe.directory /src && hugo --minify --enableGitInfo --noTimes --destination public --baseURL /"
 
-          # Ensure the forgejo user owns the output so rsync can read it
-          # (Docker root often leaves files owned by root)
-          sudo chown -R forgejo:forgejo site/public
+          # Clean up ownership so the host user can rsync it
+          sudo chown -R forgejo:forgejo site/public || true
       - name: Deploy
         run: |
           set -ex
