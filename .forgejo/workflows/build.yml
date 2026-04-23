@@ -2,7 +2,7 @@ name: Build Website
 on: [push]
 jobs:
   build:
-    runs-on: docker
+    runs-on: shell
     steps:
       - name: Checkout
         run: |
