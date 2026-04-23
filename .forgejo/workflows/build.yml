@@ -41,15 +41,16 @@ jobs:
           chmod -R 777 "$PWD/.hugo-cache"
           
           docker run --rm \
+            --entrypoint /bin/sh \
             -v "$PWD:/src" \
             -v "$PWD/.hugo-cache:/cache" \
             -e GOPATH=/cache \
             -e HUGO_CACHEDIR=/cache \
             -w /src/site \
             forgejo.jmopines.com/jm/hugo-git:latest \
-            sh -c "git config --global --add safe.directory /src && hugo --minify --enableGitInfo --noTimes --destination public --baseURL /"
+            -c "git config --global --add safe.directory /src && hugo --minify --enableGitInfo --noTimes --destination public --baseURL /"
 
-          # Clean up ownership so the host user can rsync it
+          # Ensure the host runner user can read the results for rsync
           sudo chown -R forgejo:forgejo site/public || true
       - name: Deploy
         run: |
