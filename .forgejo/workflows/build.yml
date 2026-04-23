@@ -37,21 +37,22 @@ jobs:
       - name: Build
         run: |
           set -ex
-          mkdir -p "$PWD/.hugo-cache"
-          chmod -R 777 "$PWD/.hugo-cache"
-          
-          docker run --rm \
+          # 1. Create a permanent cache folder on the VM so it doesn't redownload every time
+          mkdir -p /home/forgejo/hugo_cache
+          chmod 777 /home/forgejo/hugo_cache
+
+          # 2. Run with a 60-second timeout. If it takes longer, something is wrong.
+          # We add --network host to ensure the container can see the internet/local gitea
+          timeout 60s docker run --rm \
             --entrypoint /bin/sh \
+            --network host \
             -v "$PWD:/src" \
-            -v "$PWD/.hugo-cache:/cache" \
-            -e GOPATH=/cache \
+            -v "/home/forgejo/hugo_cache:/cache" \
             -e HUGO_CACHEDIR=/cache \
+            -e GOPATH=/cache \
             -w /src/site \
             forgejo.jmopines.com/jm/hugo-git:latest \
-            -c "git config --global --add safe.directory /src && hugo --minify --enableGitInfo --noTimes --destination public --baseURL /"
-
-          # Ensure the host runner user can read the results for rsync
-          sudo chown -R forgejo:forgejo site/public || true
+            -c "git config --global --add safe.directory /src && hugo --minify --enableGitInfo --noTimes --destination public"
       - name: Deploy
         run: |
           set -ex
