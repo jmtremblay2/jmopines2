@@ -12,25 +12,59 @@ jobs:
         run: |
           mkdir -p site/public
           chmod 777 site
+      # - name: Build
+      #   run: |
+      #     mkdir -p "$PWD/.hugo-cache"
+      #     docker run --rm \
+      #       -u "$(id -u):$(id -g)" \
+      #       -v "$PWD/site:/src" \
+      #       -v "$PWD/.git:/src/.git:ro" \
+      #       -v "$PWD/.hugo-cache:/cache" \
+      #       -e GOPATH=/cache \
+      #       -w /src \
+      #       forgejo.jmopines.com/jm/hugo-git:latest \
+      #       --minify --destination "public" --baseURL "/"
+      # - name: Deploy
+      #   run: |
+      #     echo "${{ secrets.FORGEJO_SSH }}" > /tmp/deploy_key
+      #     chmod 600 /tmp/deploy_key
+      #     rsync -az --delete \
+      #       --exclude 'resume/' \
+      #       -e "ssh -i /tmp/deploy_key -o StrictHostKeyChecking=no" \
+      #       site/public/. \
+      #       ${{ vars.JMOPINES_USER }}@${{ vars.JMOPINES_IP }}:/var/www/jmopines/
+      #     rm /tmp/deploy_key
       - name: Build
         run: |
+          set -ex
+          # 1. Ensure the cache exists
           mkdir -p "$PWD/.hugo-cache"
+          
+          # 2. Run Hugo
+          # We mount the WHOLE root ($PWD) so Hugo sees the .git folder 
+          # We set the working directory to /src/site where your hugo files live
           docker run --rm \
-            -u "$(id -u):$(id -g)" \
-            -v "$PWD/site:/src" \
-            -v "$PWD/.git:/src/.git:ro" \
+            -v "$PWD:/src" \
             -v "$PWD/.hugo-cache:/cache" \
             -e GOPATH=/cache \
-            -w /src \
+            -w /src/site \
             forgejo.jmopines.com/jm/hugo-git:latest \
-            --minify --destination "public" --baseURL "/"
+            hugo --minify --enableGitInfo --destination "public" --baseURL "/"
       - name: Deploy
         run: |
+          set -ex
+          # Verify files exist
+          ls -la site/public/
+          
+          # Setup SSH
           echo "${{ secrets.FORGEJO_SSH }}" > /tmp/deploy_key
           chmod 600 /tmp/deploy_key
-          rsync -az --delete \
+          
+          # Sync with verbose output so we see what is happening
+          rsync -avz --delete \
             --exclude 'resume/' \
             -e "ssh -i /tmp/deploy_key -o StrictHostKeyChecking=no" \
-            site/public/. \
+            site/public/ \
             ${{ vars.JMOPINES_USER }}@${{ vars.JMOPINES_IP }}:/var/www/jmopines/
+          
           rm /tmp/deploy_key
