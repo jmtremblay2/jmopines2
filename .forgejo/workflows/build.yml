@@ -49,7 +49,7 @@ jobs:
             -e GOPATH=/cache \
             -w /src/site \
             forgejo.jmopines.com/jm/hugo-git:latest \
-            hugo --minify --enableGitInfo --destination "public" --baseURL "/"
+            --minify --enableGitInfo --destination "public" --baseURL "/"
       - name: Deploy
         run: |
           set -ex
