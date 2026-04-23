@@ -37,19 +37,22 @@ jobs:
       - name: Build
         run: |
           set -ex
-          # 1. Ensure the cache exists
+          # 1. Create the cache and force it to be writable by the Docker container
           mkdir -p "$PWD/.hugo-cache"
+          chmod -R 777 "$PWD/.hugo-cache"
           
           # 2. Run Hugo
-          # We mount the WHOLE root ($PWD) so Hugo sees the .git folder 
-          # We set the working directory to /src/site where your hugo files live
           docker run --rm \
             -v "$PWD:/src" \
             -v "$PWD/.hugo-cache:/cache" \
             -e GOPATH=/cache \
+            -e HUGO_CACHEDIR=/cache \
             -w /src/site \
             forgejo.jmopines.com/jm/hugo-git:latest \
             --minify --enableGitInfo --destination "public" --baseURL "/"
+
+          # 3. Fix permissions back so the forgejo user can read the output
+          sudo chmod -R 755 site/public
       - name: Deploy
         run: |
           set -ex
