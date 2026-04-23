@@ -18,10 +18,11 @@ jobs:
           docker run --rm \
             -u "$(id -u):$(id -g)" \
             -v "$PWD/site:/src" \
+            -v "$PWD/.git:/src/.git:ro" \
             -v "$PWD/.hugo-cache:/cache" \
             -e GOPATH=/cache \
             -w /src \
-            ghcr.io/gohugoio/hugo:latest \
+            forgejo.jmopines.com/jm/hugo-git:latest \
             --minify --destination "public" --baseURL "/"
       - name: Deploy
         run: |

@@ -1,0 +1,20 @@
+{{/*
+  Render creation and modified dates for a post.
+  - Always show the creation date (`.Date`) in YYYY-MM-DD.
+  - If `.Lastmod` exists and differs (by date) from `.Date`, show
+    an "Updated: YYYY-MM-DD" suffix.
+*/}}
+{{- $created := .Date -}}
+{{- $createdFmt := $created.Format "2006-01-02" -}}
+{{- $modified := .Lastmod -}}
+
+{{- /* Print creation date */ -}}
+{{- printf "%s" $createdFmt -}}
+
+{{- /* If we have a modified timestamp, format and show when different */ -}}
+{{- if $modified -}}
+  {{- $modifiedFmt := $modified.Format "2006-01-02" -}}
+  {{- if ne $modifiedFmt $createdFmt -}}
+    {{- printf " [Updated: %s]" $modifiedFmt -}}
+  {{- end -}}
+{{- end -}}

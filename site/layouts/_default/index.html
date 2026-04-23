@@ -9,7 +9,7 @@
     {{ if .IsHome }}
       {{ $PageContext = .Site }}
     {{ end }}
-    {{ $paginator := .Paginate $PageContext.RegularPages }}
+  {{ $paginator := .Paginate ($PageContext.RegularPages.ByLastmod.Reverse) }}
 
     {{ range $paginator.Pages }}
       <article class="post on-list">
