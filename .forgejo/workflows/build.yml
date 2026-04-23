@@ -37,22 +37,25 @@ jobs:
       - name: Build
         run: |
           set -ex
-          # 1. Create the cache and force it to be writable by the Docker container
           mkdir -p "$PWD/.hugo-cache"
           chmod -R 777 "$PWD/.hugo-cache"
           
-          # 2. Run Hugo
+          # We pass the Git config as an environment variable to bypass the 'dubious ownership'
           docker run --rm \
             -v "$PWD:/src" \
             -v "$PWD/.hugo-cache:/cache" \
             -e GOPATH=/cache \
             -e HUGO_CACHEDIR=/cache \
+            -e GIT_CONFIG_COUNT=1 \
+            -e GIT_CONFIG_KEY_0=safe.directory \
+            -e GIT_CONFIG_VALUE_0=/src \
             -w /src/site \
             forgejo.jmopines.com/jm/hugo-git:latest \
-            --minify --enableGitInfo --destination "public" --baseURL "/"
+            --minify --enableGitInfo --noTimes --destination "public" --baseURL "/"
 
-          # 3. Fix permissions back so the forgejo user can read the output
-          sudo chmod -R 755 site/public
+          # Ensure the forgejo user owns the output so rsync can read it
+          # (Docker root often leaves files owned by root)
+          sudo chown -R forgejo:forgejo site/public
       - name: Deploy
         run: |
           set -ex
