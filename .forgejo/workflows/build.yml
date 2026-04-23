@@ -36,23 +36,16 @@ jobs:
       #     rm /tmp/deploy_key
       - name: Build
         run: |
-          set -ex
-          # 1. Create a permanent cache folder on the VM so it doesn't redownload every time
-          mkdir -p /home/forgejo/hugo_cache
-          chmod 777 /home/forgejo/hugo_cache
-
-          # 2. Run with a 60-second timeout. If it takes longer, something is wrong.
-          # We add --network host to ensure the container can see the internet/local gitea
-          timeout 60s docker run --rm \
-            --entrypoint /bin/sh \
-            --network host \
-            -v "$PWD:/src" \
-            -v "/home/forgejo/hugo_cache:/cache" \
-            -e HUGO_CACHEDIR=/cache \
+          mkdir -p "$PWD/.hugo-cache"
+          docker run --rm \
+            -u "$(id -u):$(id -g)" \
+            -v "$PWD/site:/src" \
+            -v "$PWD/.git:/src/.git:ro" \
+            -v "$PWD/.hugo-cache:/cache" \
             -e GOPATH=/cache \
-            -w /src/site \
+            -w /src \
             forgejo.jmopines.com/jm/hugo-git:latest \
-            -c "git config --global --add safe.directory /src && hugo --minify --enableGitInfo --noTimes --destination public"
+            --minify --destination "public" --baseURL "/"
       - name: Deploy
         run: |
           set -ex
